@@ -4,9 +4,9 @@ import { Menu, Switch } from "antd";
 import Item from "antd/lib/list/Item";
 
 import {
-  MailOutlined,
-  AppstoreOutlined,
   SettingOutlined,
+  BankOutlined,
+  PieChartOutlined,
 } from "@ant-design/icons";
 
 import logo from "../../assets/logo/portfolioout-logo-light-small.png";
@@ -42,13 +42,13 @@ const Navigation = () => {
           selectedKeys={[current]}
           mode="inline"
         >
-          <SubMenu key="sub1" icon={<MailOutlined />} title="Dashboard">
+          <SubMenu key="sub1" icon={<BankOutlined />} title="Dashboard">
             <Menu.Item key="My Portfolio">
               <Link to="/portfolio">My Portfolio</Link>
             </Menu.Item>
             <Menu.Item key="Weekly Summary">Weekly Summary</Menu.Item>
           </SubMenu>
-          <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Invest">
+          <SubMenu key="sub2" icon={<PieChartOutlined />} title="Invest">
             <Menu.Item key="Ethical Investing">Ethical Investing</Menu.Item>
             <Menu.Item key="Growth Investing">Growth Investing</Menu.Item>
             <Menu.Item key="Index Investing">Index Investing</Menu.Item>
