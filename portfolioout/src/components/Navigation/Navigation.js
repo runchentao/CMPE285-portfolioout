@@ -18,7 +18,7 @@ const { SubMenu } = Menu;
 
 const Navigation = () => {
   const [darkMode, setDarkMode] = useState(DARK);
-  const [current, setCurrent] = useState();
+  const [current, setCurrent] = useState("My Portfolio");
 
   const changeTheme = (value) => {
     setDarkMode(value ? DARK : LIGHT);
@@ -38,25 +38,23 @@ const Navigation = () => {
             onClick={handleClick}
             style={{ width: 256 }}
             defaultOpenKeys={["sub1"]}
+            defaultSelectedKeys={["1"]}
             selectedKeys={[current]}
             mode="inline"
           >
-            <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-              <Menu.Item key="1">Option 1</Menu.Item>
-              <Menu.Item key="2">Option 2</Menu.Item>
-              <Menu.Item key="3">Option 3</Menu.Item>
-              <Menu.Item key="4">Option 4</Menu.Item>
+            <SubMenu key="sub1" icon={<MailOutlined />} title="Dashboard">
+              <Menu.Item key="My Portfolio">My Portfolio</Menu.Item>
+              <Menu.Item key="Weekly Summary">Weekly Summary</Menu.Item>
             </SubMenu>
-            <SubMenu
-              key="sub2"
-              icon={<AppstoreOutlined />}
-              title="Navigation Two"
-            >
-              <Menu.Item key="5">Option 5</Menu.Item>
-              <Menu.Item key="6">Option 6</Menu.Item>
+            <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Invest">
+              <Menu.Item key="Ethical Investing">Ethical Investing</Menu.Item>
+              <Menu.Item key="Growth Investing">Growth Investing</Menu.Item>
+              <Menu.Item key="Index Investing">Index Investing</Menu.Item>
+              <Menu.Item key="Quality Investing">Quality Investing</Menu.Item>
+              <Menu.Item key="Value Investing">Value Investing</Menu.Item>
               <SubMenu key="sub3" title="Submenu">
-                <Menu.Item key="7">Option 7</Menu.Item>
-                <Menu.Item key="8">Option 8</Menu.Item>
+                <Menu.Item key="8">Option 7</Menu.Item>
+                <Menu.Item key="9">Option 8</Menu.Item>
               </SubMenu>
             </SubMenu>
             {/* <SubMenu key="sub4" icon={<SettingOutlined />} title="Settings">
