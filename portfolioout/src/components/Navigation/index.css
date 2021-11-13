@@ -20,3 +20,8 @@
   pointer-events: none;
   cursor: pointer;
 }
+
+.darkModeSwitch {
+  margin-left: 49px;
+  text-decoration: inherit;
+}

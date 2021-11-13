@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Menu, Switch } from "antd";
+import Item from "antd/lib/list/Item";
 
 import {
   MailOutlined,
@@ -58,14 +59,16 @@ const Navigation = () => {
                 <Menu.Item key="8">Option 8</Menu.Item>
               </SubMenu>
             </SubMenu>
-            <SubMenu key="sub4" icon={<SettingOutlined />} title="Dark Mode">
-              <Switch
-                checked={darkMode === DARK}
-                onChange={changeTheme}
-                checkedChildren={"Dark Mode"}
-                unCheckedChildren={"Dark Mode"}
-              />
-            </SubMenu>
+            {/* <SubMenu key="sub4" icon={<SettingOutlined />} title="Settings">
+              <Item key="9" className="darkModeSwitch">
+                Dark Mode
+                <Switch
+                  style={{ marginLeft: 10 }}
+                  checked={darkMode === DARK}
+                  onChange={changeTheme}
+                />
+              </Item>
+            </SubMenu> */}
           </Menu>
         </div>
         <img className="logo" src={logo} alt="" />
