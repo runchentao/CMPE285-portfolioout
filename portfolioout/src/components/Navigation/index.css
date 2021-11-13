@@ -1,7 +1,8 @@
 .container {
-  max-width: fit-content;
+  position: relative;
   height: 100vh;
-  margin-bottom: 10px;
+  width: 256px;
+  overflow: hidden;
 }
 
 .darkMode {
@@ -10,15 +11,12 @@
   transition: background-color 250ms ease-in-out;
 }
 
-.logoContainer {
+.logo {
+  width: inherit;
   position: absolute;
   bottom: 0;
-  height: fit-content;
-  width: inherit;
   padding: 20px;
-}
-
-.logo {
-  width: 100%;
-  height: 100%;
+  background-color: inherit;
+  pointer-events: none;
+  cursor: pointer;
 }

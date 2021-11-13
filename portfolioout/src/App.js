@@ -10,7 +10,7 @@ import "./App.css";
 const App = () => {
   return (
     <Router>
-      <Fragment>
+      <div className="App">
         <Row>
           <Col>
             <Navigation />
@@ -21,7 +21,7 @@ const App = () => {
             </Routes>
           </Col>
         </Row>
-      </Fragment>
+      </div>
     </Router>
   );
 };
