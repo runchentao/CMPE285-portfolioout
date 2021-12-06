@@ -8,6 +8,15 @@ app.use(express.json({extended: false}));
 
 app.use("/suggest", require("./routes/suggest"));
 
+app.get('/test', (req, res) => {
+    try {
+        return res.json({data: "test route OK"});
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).send('Server Error');
+    }
+})
+
 // app.get('/', (req, res) => {
 //     let dataToSend;
 //     // spawn new child process to call the python script
