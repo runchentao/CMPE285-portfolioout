@@ -64,7 +64,7 @@ class StockAPI:
 
         except requests.exceptions.ConnectionError:
             print("Connection error, please check your internet.")
-            eixt(0)
+            exit(0)
 
         except Exception:
             print("Invalid stock code, please try again.")
