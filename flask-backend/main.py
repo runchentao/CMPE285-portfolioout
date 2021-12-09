@@ -118,7 +118,6 @@ class StockAPI:
             print("Please deposit a minimum of $5000 USD.")
             return -1
 
-        money = round(investUSD / 3, 2)
         codes = self.topThreeStocks(strategy)
         try:
             for i, c in enumerate(codes):
@@ -126,7 +125,11 @@ class StockAPI:
                 self.portfolio[i]["symbol"] = c
                 self.portfolio[i]["52WeekChange"] = code.info["52WeekChange"]
                 self.portfolio[i]["currentPrice"] = code.info["currentPrice"]
-                self.portfolio[i]["investedUSD"] = money
+                
+            # The investing money will depends on the 52 weekschange ratio
+            totalChange = sum([portfolio["52WeekChange"] for portfolio in self.portfolio])
+            for portfolio in self.portfolio:
+                portfolio["investedUSD"] = investUSD * portfolio["52WeekChange"] / totalChange
 
         except TypeError:
             print("Unable to read stock codes!")
