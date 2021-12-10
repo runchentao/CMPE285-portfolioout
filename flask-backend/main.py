@@ -4,10 +4,14 @@ import yfinance as yf
 import requests
 import json
 import sys
+import pandas as pd
 
 # Investment Strategy Constants
-QUALITY = 3
-VALUE = 4
+ETHICAL = 1
+GROWTH = 2
+INDEX = 3
+QUALITY = 4
+VALUE = 5
 SORTBY = "returnOnEquity"
 SYMBOL = "symbol"
 CURRENTPRICE = "currentPrice"
@@ -79,6 +83,7 @@ class StockAPI:
         if investUSD < 5000:
             print("Please deposit a minimum of $5000 USD.")
             return -1
+
         codes = self.topThreeStocks(strategy)
         if codes:
             for code in codes:
@@ -87,7 +92,8 @@ class StockAPI:
                 self.portfolio.append({
                 SYMBOL         : code["shortName"],
                 SORTBY         : code[SORTBY],
-                CURRENTPRICE   : code[CURRENTPRICE]
+                CURRENTPRICE   : code[CURRENTPRICE],
+                # FIVEDAYTREND      : code["fiveDayTrend"]
                 })
 
             # The investing money will depends on the 52 weekschange ratio
@@ -99,12 +105,22 @@ class StockAPI:
             print('ERROR: Unable to retrieve the stock code...')
             return -1
 
+    def get5DayHistory(self, code=0):
+        code = yf.Ticker("ADBE")
+        weeklyTrend = code.history(period="5d", interval="1d", actions=False)
+        df = pd.DataFrame(weeklyTrend)
+        print(weeklyTrend)
+
 
 if __name__ == "__main__":
     s = StockAPI()
 
+    """"
     # User must specify a single strategy and deposit a minimum of $5000 USD to create portfolio (25 seconds turnaround time)
-    code = s.createPortfolio(5, 4999)
+    code = s.createPortfolio(INDEX, 5000)
     print('ERROR CODE: ' + str(code))
+
     print("*** Portfolio Results ***")
     print(json.dumps(s.portfolio, sort_keys=True, indent=4))
+    """
+    s.get5DayHistory()
