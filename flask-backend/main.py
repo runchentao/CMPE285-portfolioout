@@ -12,9 +12,10 @@ GROWTH = 2
 INDEX = 3
 QUALITY = 4
 VALUE = 5
-SORTBY = "returnOnEquity"
 SYMBOL = "symbol"
+RETURN = "return"
 CURRENTPRICE = "currentPrice"
+FIVEDAYTREND = "fiveDayTrend"
 
 """
 The StockAPI class utilizes the Yahoo Finance API to get stock information and analyzes
@@ -27,10 +28,15 @@ class StockAPI:
         # self.investUSD = investUSD
         self.ethicalStocks = ["GILD", "CRM", "FSLR", "KMB", "HPE"]
         self.growthStocks = ["WOOF", "LYB", "NLSN", "UPST", "ORCL"]
-        self.indexStocks = ["FNILX", "VOO", "SPY", "IVV", "SWPPX"]
+        self.indexStocks = ["GM", "PILBF", "FTNT", "MXL", "CNC"]
         self.qualityStocks = ["FTNT", "AMAT", "COF", "GNRC", "DVN"]
         self.valueStocks = ["BAC", "KHC", "VZ", "DVA", "BK"]
         self.portfolio = []
+        self.sortby = {ETHICAL: "returnOnEquity",
+                       GROWTH : "returnOnEquity",
+                       INDEX  : "returnOnEquity",
+                       QUALITY: "returnOnEquity",
+                       VALUE  : "returnOnEquity"}
 
     # checkStrategy is a helper function that finds the strategy type based on the integer value
     def checkStrategy(self, strategy: int):
@@ -61,9 +67,12 @@ class StockAPI:
 
             for s in strategyType:
                 code = yf.Ticker(s)
-                stockList.append(code.info)
+                weeklyTrend = code.history(period="5d", interval="1d", actions=False)
+                open = weeklyTrend["Open"].tolist()
+                close = weeklyTrend["Close"].tolist()
+                stockList.append((code.info, list(zip(open, close))))
 
-            stockList = sorted(stockList, key = lambda x: x[SORTBY])[-3:]
+            stockList = sorted(stockList, key = lambda x: x[0][self.sortby[strategy]])[-3:]
             return stockList
 
         except requests.exceptions.ConnectionError:
@@ -71,56 +80,50 @@ class StockAPI:
             exit(0)
 
         except Exception:
-            print("Invalid stock code, please try again.")
+            print("Error exception, please try again.")
             exit(0)
 
     # createPortfolio requires at least 1 investment strategy from the user to create an investment portfolio
     def createPortfolio(self, strategy=0, investUSD=0):
-        if strategy < 0 or strategy > 5:
+        if not type(strategy) == int or strategy < 0 or strategy > 5:
             print("Please specify a valid investment strategy.")
             return -1
 
-        if investUSD < 5000:
-            print("Please deposit a minimum of $5000 USD.")
+        if not type(investUSD) == int or investUSD < 5000:
+            print("Please specify a valid deposit amount, a minimum deposit is $5000 USD.")
             return -1
 
         codes = self.topThreeStocks(strategy)
         if codes:
             for code in codes:
-                print(code["shortName"])
+                print(code[0]["shortName"])
 
                 self.portfolio.append({
-                SYMBOL         : code["shortName"],
-                SORTBY         : code[SORTBY],
-                CURRENTPRICE   : code[CURRENTPRICE],
-                # FIVEDAYTREND      : code["fiveDayTrend"]
+                SYMBOL       : code[0]["shortName"],
+                RETURN       : code[0][self.sortby[strategy]],
+                CURRENTPRICE : code[0][CURRENTPRICE],
+                FIVEDAYTREND : code[1]
                 })
 
             # The investing money will depends on the 52 weekschange ratio
-            totalChange = sum([portfolio[SORTBY] for portfolio in self.portfolio])
+            totalChange = sum([portfolio[RETURN] for portfolio in self.portfolio])
             for portfolio in self.portfolio:
-                portfolio["investedUSD"] = investUSD * portfolio[SORTBY] / totalChange
+                portfolio["investedUSD"] = investUSD * \
+                                           portfolio[RETURN] / \
+                                           totalChange
             return 1
         else:
             print('ERROR: Unable to retrieve the stock code...')
             return -1
 
-    def get5DayHistory(self, code=0):
-        code = yf.Ticker("ADBE")
-        weeklyTrend = code.history(period="5d", interval="1d", actions=False)
-        df = pd.DataFrame(weeklyTrend)
-        print(weeklyTrend)
-
 
 if __name__ == "__main__":
     s = StockAPI()
 
-    """"
     # User must specify a single strategy and deposit a minimum of $5000 USD to create portfolio (25 seconds turnaround time)
-    code = s.createPortfolio(INDEX, 5000)
+    code = s.createPortfolio(5, 5000)
     print('ERROR CODE: ' + str(code))
 
     print("*** Portfolio Results ***")
     print(json.dumps(s.portfolio, sort_keys=True, indent=4))
-    """
-    s.get5DayHistory()
+    # s.get5DayHistory()
