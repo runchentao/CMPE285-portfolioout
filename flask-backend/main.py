@@ -72,11 +72,11 @@ class StockAPI:
 
     # createPortfolio requires at least 1 investment strategy from the user to create an investment portfolio
     def createPortfolio(self, strategy=0, investUSD=0):
-        if not strategy:
-            print("Please specify an investment strategy.")
+        if strategy < 0 or strategy > 5:
+            print("Please specify a valid investment strategy.")
             return -1
 
-        if not investUSD:
+        if investUSD < 5000:
             print("Please deposit a minimum of $5000 USD.")
             return -1
         codes = self.topThreeStocks(strategy)
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     s = StockAPI()
 
     # User must specify a single strategy and deposit a minimum of $5000 USD to create portfolio (25 seconds turnaround time)
-    code = s.createPortfolio(5, 5000)
+    code = s.createPortfolio(5, 4999)
     print('ERROR CODE: ' + str(code))
     print("*** Portfolio Results ***")
     print(json.dumps(s.portfolio, sort_keys=True, indent=4))
