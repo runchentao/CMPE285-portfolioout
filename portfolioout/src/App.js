@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Layout, Breadcrumb, Row, Col } from "antd";
 
 import Navigation from "./components/Navigation/Navigation";
-import Home from "./pages/Home";
+import Home from "./pages/HomePage/Home";
 import "./App.css";
 
 const App = () => {
