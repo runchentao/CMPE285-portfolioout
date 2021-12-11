@@ -1,5 +1,5 @@
-import React from "react";
-import { Row, Col } from "antd";
+import React, { useState } from "react";
+import { Button, Spin } from "antd";
 import useApi from "../../apiHooks/useApi";
 import Spinner from "../../components/Spin/Spinner";
 import SuggestStockForm from "../../components/SuggestStockForm/SuggestStockForm";
@@ -7,26 +7,28 @@ import SuggestStockForm from "../../components/SuggestStockForm/SuggestStockForm
 import "./index.css";
 
 const Home = () => {
-  //const { loading, data } = useApi("/suggest/5/5000");
+  const { loading, data, fetchApi } = useApi();
+  const [toggle, setToggle] = useState(false);
 
-  //if (loading) return <Spinner />;
+  const onSubmit = (e) => {
+    setToggle(true);
+    fetchApi("/suggest/" + e.strategy + "/" + e.investment);
+  };
   return (
     <div className="content">
       <h1 className="title">
         Start building your first stock portfolio from here
       </h1>
-      {/* <Row>
-        <Col xs={2} sm={4} md={2} lg={2} xl={2}></Col>
-        <Col xs={20} sm={16} md={20} lg={20} xl={20}>
-         
-        </Col>
-        <Col xs={2} sm={4} md={2} lg={2} xl={2}></Col>
-      </Row> */}
-
       <div className="body">
-        <SuggestStockForm />
+        <SuggestStockForm onSubmit={(e) => onSubmit(e)} />
       </div>
-      {/* <p>{JSON.stringify(data)}</p> */}
+      {toggle ? (
+        loading ? (
+          <Spinner />
+        ) : (
+          <div>{data ? <p>{JSON.stringify(data)}</p> : <p>No data</p>}</div>
+        )
+      ) : null}
     </div>
   );
 };

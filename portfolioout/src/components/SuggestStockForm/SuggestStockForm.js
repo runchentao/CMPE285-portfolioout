@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Select } from "antd";
 import "./index.css";
 
@@ -45,9 +45,10 @@ const btnLayout = {
   },
 };
 
-const SuggestStockForm = () => {
+const SuggestStockForm = (props) => {
   const onFinish = (values) => {
     console.log("Success:", values);
+    props.onSubmit(values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -88,7 +89,7 @@ const SuggestStockForm = () => {
 
       <Form.Item {...btnLayout}>
         <Button type="primary" htmlType="submit">
-          Submit
+          Start Invest
         </Button>
       </Form.Item>
     </Form>

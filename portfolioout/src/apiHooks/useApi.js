@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-const useApi = (url) => {
-  const [loading, setLoading] = useState(true);
+const useApi = () => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
-  const fetchApi = async () => {
+  const fetchApi = async (url) => {
+    setLoading(true);
     try {
       await axios.get(url).then((res) => {
         const { data } = res.data;
@@ -14,14 +15,11 @@ const useApi = (url) => {
       });
     } catch (err) {
       console.error(err.message);
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
-  return { loading, data };
+  return { loading, data, fetchApi };
 };
 
 export default useApi;
