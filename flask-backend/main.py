@@ -1,4 +1,4 @@
-from typing import Deque, List, Type
+from typing import Deque
 from datetime import date
 from pandas.core.indexes.base import Index
 import yfinance as yf
@@ -6,7 +6,6 @@ import requests
 import json
 import sys
 import pandas as pd
-import itertools
 
 # Investment Strategy Constants
 ETHICAL = 1

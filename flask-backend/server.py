@@ -1,4 +1,3 @@
-from functools import total_ordering
 from flask import Flask, abort
 from flask_restful import Resource, Api
 from main import *
