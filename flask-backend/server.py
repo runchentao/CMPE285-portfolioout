@@ -1,10 +1,14 @@
-from functools import total_ordering
 from flask import Flask, abort
 from flask_restful import Resource, Api
 from main import *
 
 app = Flask(__name__)
 api = Api(app)
+
+
+class Test(Resource):
+    def get(self):
+        return "Server running"
 
 
 class StockSuggestion(Resource):
@@ -49,6 +53,7 @@ class StockSuggestion(Resource):
 
 
 api.add_resource(StockSuggestion, '/suggest/<int:strategy>/<int:investment>')
+api.add_resource(Test, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
