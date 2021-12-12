@@ -27,7 +27,7 @@ which stocks are the best to purchase for each of the 5 different investment str
 
 class StockAPI:
     def __init__(self):
-        # self.investUSD = investUSD
+        self.investUSD = 0
         self.ethicalStocks = ["GILD", "CRM", "FSLR", "KMB", "HPE"]
         self.growthStocks = ["WOOF", "LYB", "NLSN", "UPST", "ORCL"]
         self.indexStocks = ["GM", "PILBF", "FTNT", "MXL", "CNC"]
@@ -74,7 +74,7 @@ class StockAPI:
                 weeklyGains = []
                 for index, row in weeklyTrend.iterrows():
                     weeklyGains.append(
-                        [index.strftime('%m%d'), row["Close"] - row["Open"]])
+                        [index.strftime('%m/%d'), row["Close"] - row["Open"]])
                 # open = weeklyTrend["Open"].tolist()
                 # close = weeklyTrend["Close"].tolist()
                 stockList.append((code.info, weeklyGains))
@@ -101,10 +101,13 @@ class StockAPI:
             print(
                 "Please specify a valid deposit amount, a minimum deposit is $5000 USD.")
             return -1
-
+        self.investUSD = investUSD
         codes = self.topThreeStocks(strategy)
         if codes:
             chartData = []
+            chartIdx = ["Date"]
+            for code in codes:
+                chartIdx.append(code[0]["shortName"])
             for code in codes:
                 print(code[0]["shortName"])
 
@@ -123,6 +126,9 @@ class StockAPI:
                 portfolio["investedUSD"] = investUSD * \
                     portfolio[RETURN] / \
                     totalChange
+            for portfolio in self.portfolio:
+                portfolio["shares"] = portfolio["investedUSD"] / \
+                    portfolio["currentPrice"]
 
             # Organize data for chart display
             flat_list = [item for sublist in chartData for item in sublist]
@@ -132,6 +138,7 @@ class StockAPI:
             grouped_lists = grouped_lists.reset_index()
             grouped_lists = grouped_lists.values.tolist()
             formattedChartData = []
+            formattedChartData.append(chartIdx)
             for pair in grouped_lists:
                 date, arr = pair
                 queue = Deque(arr)
