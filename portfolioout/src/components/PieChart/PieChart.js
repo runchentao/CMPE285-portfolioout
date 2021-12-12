@@ -1,26 +1,20 @@
 import React from "react";
 import Chart from "react-google-charts";
 
-const FiveDayTrend = (props) => {
+const PieChart = (props) => {
   const chartData = props.data;
   return (
     <Chart
       width={"90%"}
       height={"100%"}
-      chartType="LineChart"
+      chartType="PieChart"
       loader={<div>Loading Chart</div>}
       data={chartData}
       options={{
-        legend: { position: "top" },
-        hAxis: {
-          title: "Date",
-        },
-        vAxis: {
-          title: "USD",
-        },
+        title: "My Investments (USD)",
       }}
     />
   );
 };
 
-export default FiveDayTrend;
+export default PieChart;

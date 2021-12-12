@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Spin } from "antd";
 import useApi from "../../apiHooks/useApi";
 import Spinner from "../../components/Spin/Spinner";
 import SuggestStockForm from "../../components/SuggestStockForm/SuggestStockForm";
 import FiveDayTrend from "../../components/Chart/FiveDayTrend";
+import StackingChart from "../../components/ChartStocks/StackingChart";
+import PieChart from "../../components/PieChart/PieChart";
 
 import "./index.css";
 
-const generateChartData = (res) => {
-  let data = [];
-  return data;
-};
-
 const Home = () => {
-  const { loading, data, fetchApi } = useApi();
+  const { loading, pieData, chartData, portfolioData, fetchApi } = useApi();
+
   const [toggle, setToggle] = useState(false);
 
   const onSubmit = (e) => {
@@ -28,17 +26,30 @@ const Home = () => {
       </h1>
       <div className="body">
         <SuggestStockForm onSubmit={(e) => onSubmit(e)} />
+
+        {toggle ? (
+          loading ? (
+            <Spinner />
+          ) : (
+            <div>
+              <h1>Here is your weekly portfolio summary</h1>
+              <div className="charts">
+                <div>
+                  <FiveDayTrend data={portfolioData} />
+                </div>
+                <br />
+                <div>
+                  <PieChart data={pieData} />
+                </div>
+                <br />
+                <div>
+                  <StackingChart data={chartData} />
+                </div>
+              </div>
+            </div>
+          )
+        ) : null}
       </div>
-      <FiveDayTrend data={data} />
-      {toggle ? (
-        loading ? (
-          <Spinner />
-        ) : (
-          <div>
-            <div>{data ? <p>{JSON.stringify(data)}</p> : <p>No data</p>}</div>
-          </div>
-        )
-      ) : null}
     </div>
   );
 };
