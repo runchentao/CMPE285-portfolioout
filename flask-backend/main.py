@@ -1,10 +1,12 @@
-from typing import List, Type
+from typing import Deque, List, Type
 from datetime import date
+from pandas.core.indexes.base import Index
 import yfinance as yf
 import requests
 import json
 import sys
 import pandas as pd
+import itertools
 
 # Investment Strategy Constants
 ETHICAL = 1
@@ -25,7 +27,7 @@ which stocks are the best to purchase for each of the 5 different investment str
 
 class StockAPI:
     def __init__(self):
-        # self.investUSD = investUSD
+        self.investUSD = 0
         self.ethicalStocks = ["GILD", "CRM", "FSLR", "KMB", "HPE"]
         self.growthStocks = ["WOOF", "LYB", "NLSN", "UPST", "ORCL"]
         self.indexStocks = ["GM", "PILBF", "FTNT", "MXL", "CNC"]
@@ -33,10 +35,10 @@ class StockAPI:
         self.valueStocks = ["BAC", "KHC", "VZ", "DVA", "BK"]
         self.portfolio = []
         self.sortby = {ETHICAL: "returnOnEquity",
-                       GROWTH : "returnOnEquity",
-                       INDEX  : "returnOnEquity",
+                       GROWTH: "returnOnEquity",
+                       INDEX: "returnOnEquity",
                        QUALITY: "returnOnEquity",
-                       VALUE  : "returnOnEquity"}
+                       VALUE: "returnOnEquity"}
 
     # checkStrategy is a helper function that finds the strategy type based on the integer value
     def checkStrategy(self, strategy: int):
@@ -67,12 +69,18 @@ class StockAPI:
 
             for s in strategyType:
                 code = yf.Ticker(s)
-                weeklyTrend = code.history(period="5d", interval="1d", actions=False)
-                open = weeklyTrend["Open"].tolist()
-                close = weeklyTrend["Close"].tolist()
-                stockList.append((code.info, list(zip(open, close))))
+                weeklyTrend = code.history(
+                    period="5d", interval="1d", actions=False)
+                weeklyGains = []
+                for index, row in weeklyTrend.iterrows():
+                    weeklyGains.append(
+                        [index.strftime('%m/%d'), row["Close"] - row["Open"]])
+                # open = weeklyTrend["Open"].tolist()
+                # close = weeklyTrend["Close"].tolist()
+                stockList.append((code.info, weeklyGains))
 
-            stockList = sorted(stockList, key = lambda x: x[0][self.sortby[strategy]])[-3:]
+            stockList = sorted(
+                stockList, key=lambda x: x[0][self.sortby[strategy]])[-3:]
             return stockList
 
         except requests.exceptions.ConnectionError:
@@ -90,27 +98,53 @@ class StockAPI:
             return -1
 
         if not type(investUSD) == int or investUSD < 5000:
-            print("Please specify a valid deposit amount, a minimum deposit is $5000 USD.")
+            print(
+                "Please specify a valid deposit amount, a minimum deposit is $5000 USD.")
             return -1
-
+        self.investUSD = investUSD
         codes = self.topThreeStocks(strategy)
         if codes:
+            chartData = []
+            chartIdx = ["Date"]
+            for code in codes:
+                chartIdx.append(code[0]["shortName"])
             for code in codes:
                 print(code[0]["shortName"])
 
                 self.portfolio.append({
-                SYMBOL       : code[0]["shortName"],
-                RETURN       : code[0][self.sortby[strategy]],
-                CURRENTPRICE : code[0][CURRENTPRICE],
-                FIVEDAYTREND : code[1]
+                    SYMBOL: code[0]["shortName"],
+                    RETURN: code[0][self.sortby[strategy]],
+                    CURRENTPRICE: code[0][CURRENTPRICE],
+                    FIVEDAYTREND: code[1]
                 })
+                chartData.append(code[1])
 
             # The investing money will depends on the 52 weekschange ratio
-            totalChange = sum([portfolio[RETURN] for portfolio in self.portfolio])
+            totalChange = sum([portfolio[RETURN]
+                              for portfolio in self.portfolio])
             for portfolio in self.portfolio:
                 portfolio["investedUSD"] = investUSD * \
-                                           portfolio[RETURN] / \
-                                           totalChange
+                    portfolio[RETURN] / \
+                    totalChange
+            for portfolio in self.portfolio:
+                portfolio["shares"] = portfolio["investedUSD"] / \
+                    portfolio["currentPrice"]
+
+            # Organize data for chart display
+            flat_list = [item for sublist in chartData for item in sublist]
+            df = pd.DataFrame(flat_list)
+            grouped_df = df.groupby(0)
+            grouped_lists = grouped_df[1].apply(list)
+            grouped_lists = grouped_lists.reset_index()
+            grouped_lists = grouped_lists.values.tolist()
+            formattedChartData = []
+            formattedChartData.append(chartIdx)
+            for pair in grouped_lists:
+                date, arr = pair
+                queue = Deque(arr)
+                queue.appendleft(date)
+                formattedChartData.append(tuple(queue))
+            self.portfolio.append(formattedChartData)
             return 1
         else:
             print('ERROR: Unable to retrieve the stock code...')
