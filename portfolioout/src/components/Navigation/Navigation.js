@@ -45,19 +45,14 @@ const Navigation = () => {
           <Menu.Item key="My Portfolio">
             <Link to="/portfolio">My Portfolio</Link>
           </Menu.Item>
-          <Menu.Item key="Weekly Summary">Weekly Summary</Menu.Item>
         </SubMenu>
-        <SubMenu key="sub2" icon={<PieChartOutlined />} title="Invest">
+        {/* <SubMenu key="sub2" icon={<PieChartOutlined />} title="Invest">
           <Menu.Item key="Ethical Investing">Ethical Investing</Menu.Item>
           <Menu.Item key="Growth Investing">Growth Investing</Menu.Item>
           <Menu.Item key="Index Investing">Index Investing</Menu.Item>
           <Menu.Item key="Quality Investing">Quality Investing</Menu.Item>
           <Menu.Item key="Value Investing">Value Investing</Menu.Item>
-          <SubMenu key="sub3" title="Submenu">
-            <Menu.Item key="8">Option 7</Menu.Item>
-            <Menu.Item key="9">Option 8</Menu.Item>
-          </SubMenu>
-        </SubMenu>
+        </SubMenu> */}
         {/* <SubMenu key="sub4" icon={<SettingOutlined />} title="Settings">
               <Item key="9" className="darkModeSwitch">
                 Dark Mode

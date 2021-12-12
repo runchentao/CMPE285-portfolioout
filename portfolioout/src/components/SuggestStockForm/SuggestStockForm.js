@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, InputNumber } from "antd";
+import { DollarOutlined } from "@ant-design/icons";
 import "./index.css";
 
 const { Option } = Select;
@@ -72,7 +73,7 @@ const SuggestStockForm = (props) => {
           { required: true, message: "Please select at least one strategy." },
         ]}
       >
-        <Select mode="multiple" allowClear style={{ width: "100%" }}>
+        <Select allowClear style={{ width: "60%" }}>
           {options}
         </Select>
       </Form.Item>
@@ -82,9 +83,14 @@ const SuggestStockForm = (props) => {
         name="investment"
         rules={[
           { required: true, message: "Please enter your investment amount." },
+          {
+            type: "number",
+            min: 5000,
+            message: "Invalid input, minimum investment is 5000 USD",
+          },
         ]}
       >
-        <Input />
+        <InputNumber addonBefore={<DollarOutlined />} />
       </Form.Item>
 
       <Form.Item {...btnLayout}>

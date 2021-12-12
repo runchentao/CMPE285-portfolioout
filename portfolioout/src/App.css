@@ -42,6 +42,61 @@
   font-family: "Montserrat", sans-serif;
 }
 
+.ant-select-item-option-content {
+  -ms-flex: auto;
+  flex: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: end;
+}
+
+.ant-btn-primary {
+  color: forestgreen;
+  border-color: #afff26;
+  background: #afff26;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn-primary:hover {
+  color: forestgreen;
+  border-color: #afff26;
+  background: #afff26;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn-primary::after {
+  color: forestgreen;
+  border-color: #afff26;
+  background: #afff26;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn-primary:focus {
+  color: forestgreen;
+  border-color: #afff26;
+  background: #afff26;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-spin-dot-item {
+  position: absolute;
+  display: block;
+  width: 9px;
+  height: 9px;
+  background-color: #afff26;
+  border-radius: 100%;
+  -ms-transform: scale(0.75);
+  transform: scale(0.75);
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  opacity: 0.3;
+  animation: antSpinMove 1s infinite linear alternate;
+}
 /* Google Font */
 @font-face {
   font-family: "Montserrat", sans-serif;

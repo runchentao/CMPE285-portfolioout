@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Spin } from "antd";
 import useApi from "../../apiHooks/useApi";
 import Spinner from "../../components/Spin/Spinner";
 import SuggestStockForm from "../../components/SuggestStockForm/SuggestStockForm";
@@ -32,7 +31,7 @@ const Home = () => {
             <Spinner />
           ) : (
             <div>
-              <h1>Here is your weekly portfolio summary</h1>
+              <h2>Here is your weekly portfolio summary</h2>
               <div className="charts">
                 <div>
                   <FiveDayTrend data={portfolioData} />
