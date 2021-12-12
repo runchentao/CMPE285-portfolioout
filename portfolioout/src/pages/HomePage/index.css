@@ -8,9 +8,22 @@
   padding-left: 10%;
 }
 
-.charts {
-  padding-left: 28%;
-  padding-right: 20%;
-  overflow-x: hidden;
-  overflow-y: hidden;
+@media only screen and (max-width: 600px) {
+  .body {
+    margin-top: 20px;
+  }
+
+  .charts {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .charts {
+    padding-left: 20%;
+    padding-right: 20%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 }

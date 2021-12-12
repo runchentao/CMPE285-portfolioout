@@ -5,7 +5,7 @@ const StackingChart = (props) => {
   const chartData = props.data;
   return (
     <Chart
-      width={"90%"}
+      width={"100%"}
       height={"100%"}
       chartType="AreaChart"
       loader={<div>Loading Chart</div>}

@@ -5,7 +5,7 @@ const PieChart = (props) => {
   const chartData = props.data;
   return (
     <Chart
-      width={"90%"}
+      width={"100%"}
       height={"100%"}
       chartType="PieChart"
       loader={<div>Loading Chart</div>}

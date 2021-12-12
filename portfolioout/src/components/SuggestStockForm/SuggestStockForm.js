@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Select, InputNumber } from "antd";
+import React from "react";
+import { Form, Button, Select, InputNumber } from "antd";
 import { DollarOutlined } from "@ant-design/icons";
 import "./index.css";
 
@@ -48,7 +48,6 @@ const btnLayout = {
 
 const SuggestStockForm = (props) => {
   const onFinish = (values) => {
-    console.log("Success:", values);
     props.onSubmit(values);
   };
 
@@ -73,7 +72,7 @@ const SuggestStockForm = (props) => {
           { required: true, message: "Please select at least one strategy." },
         ]}
       >
-        <Select allowClear style={{ width: "60%" }}>
+        <Select allowClear style={{ width: "80%" }}>
           {options}
         </Select>
       </Form.Item>
