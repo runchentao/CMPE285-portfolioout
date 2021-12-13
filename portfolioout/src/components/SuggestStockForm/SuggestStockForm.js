@@ -1,25 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button, Select, InputNumber } from "antd";
 import { DollarOutlined } from "@ant-design/icons";
 import "./index.css";
 
 const { Option } = Select;
-const options = [
-  <Option key="1" value="1">
-    Ethical Investing
-  </Option>,
-  <Option key="2" value="2">
-    Growth Investing
-  </Option>,
-  <Option key="3" value="3">
-    Index Investing
-  </Option>,
-  <Option key="4" value="4">
-    Quality Investing
-  </Option>,
-  <Option key="5" value="5">
-    Value Investing
-  </Option>,
+const opts = [
+  { value: "Ethical Investing", key: "1" },
+  { value: "Growth Investing", key: "2" },
+  { value: "Index Investing", key: "3" },
+  { value: "Quality Investing", key: "4" },
+  { value: "Value Investing", key: "5" },
 ];
 
 const formLayout = {
@@ -47,6 +37,12 @@ const btnLayout = {
 };
 
 const SuggestStockForm = (props) => {
+  const [optionsSelected, setOptionsSelected] = useState([]);
+
+  const handleChange = (e) => {
+    setOptionsSelected(e);
+  };
+
   const onFinish = (values) => {
     props.onSubmit(values);
   };
@@ -72,8 +68,26 @@ const SuggestStockForm = (props) => {
           { required: true, message: "Please select at least one strategy." },
         ]}
       >
-        <Select allowClear style={{ width: "80%" }}>
-          {options}
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: "80%" }}
+          onChange={handleChange}
+        >
+          {opts.map((item) => (
+            <Option
+              disabled={
+                optionsSelected.length > 1
+                  ? optionsSelected.includes(item)
+                    ? false
+                    : true
+                  : false
+              }
+              key={item.key}
+            >
+              {item.value}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
 
