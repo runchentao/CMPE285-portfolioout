@@ -7,15 +7,31 @@ import StackingChart from "../../components/ChartStocks/StackingChart";
 import PieChart from "../../components/PieChart/PieChart";
 
 import "./index.css";
+import { Button } from "antd";
 
 const Home = () => {
   const { loading, pieData, chartData, portfolioData, fetchApi } = useApi();
-
   const [toggle, setToggle] = useState(false);
+  const [req, setReq] = useState([]);
+  const [initialInvestment, setInitialInvestment] = useState();
+  const stratMap = {
+    1: "Ethical Investing",
+    2: "Growth Investing",
+    3: "Index Investing",
+    4: "Quality Investing",
+    5: "Value Investing",
+  };
 
   const onSubmit = (e) => {
+    setReq(e.strategy);
+    setInitialInvestment(e.investment);
+  };
+
+  const showStrat = (strat) => {
     setToggle(true);
-    fetchApi("/suggest/" + e.strategy + "/" + e.investment);
+    fetchApi(
+      "/suggest/" + strat + "/" + (initialInvestment / req.length).toFixed()
+    );
   };
 
   return (
@@ -25,13 +41,27 @@ const Home = () => {
       </h1>
       <div className="body">
         <SuggestStockForm onSubmit={(e) => onSubmit(e)} />
+        {req.length > 0 ? (
+          <div style={{ marginBottom: "40px" }}>
+            <h3>View your selected investment strategy</h3>
+            {req.map((item) => (
+              <Button
+                style={{ marginLeft: "20px" }}
+                key={item}
+                onClick={() => showStrat(item)}
+              >
+                {stratMap[item]}
+              </Button>
+            ))}
+          </div>
+        ) : null}
 
         {toggle ? (
           loading ? (
             <Spinner />
           ) : (
             <div>
-              <h2>Here is your weekly portfolio summary</h2>
+              <h3>Here is your weekly portfolio summary</h3>
               <div className="charts">
                 <div>
                   <FiveDayTrend data={portfolioData} />

@@ -98,8 +98,9 @@ const SuggestStockForm = (props) => {
           { required: true, message: "Please enter your investment amount." },
           {
             type: "number",
-            min: 5000,
-            message: "Invalid input, minimum investment is 5000 USD",
+            min: optionsSelected.length > 1 ? 10000 : 5000,
+            message:
+              "Minimum investment is 5000 USD for each selected strategy",
           },
         ]}
       >
